@@ -31,7 +31,9 @@ get_header(); ?>
                         the_post();
                         ?>
                         <p>&nbsp;</p>
-                        <p align="center"><img src="<?=$iro_job['logo_src']?>"/></p>
+                        <?php if(!empty($iro_job['logo_src'])) { ?>
+                            <p align="center"><img src="<?=$iro_job['logo_src']?>"/></p>
+                        <?php } ?>
                         <p>&nbsp;</p>
                         <p><?=$iro_job['job_intro']?></p>
 

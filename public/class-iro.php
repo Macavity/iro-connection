@@ -53,6 +53,13 @@ class iRO_Connection {
 
     private $pageTitle = "";
 
+    private $jsonFields = array(
+        'job_intro','position','location', 'industry',
+        'job_description','job_candidate','job_desirability',
+        //'job_resume',
+        'contact_name'
+    );
+
     /**
      * Initialize the plugin by setting localization and loading public scripts
      * and styles.
@@ -148,7 +155,6 @@ class iRO_Connection {
             $wp_rewrite->flush_rules();
         }
 
-
         return $rules;
     }
 
@@ -188,9 +194,17 @@ class iRO_Connection {
                     $this->pageTitle = $iro_job['position_name'];
                 }
 
-                $wp_title = $this->pageTitle . "|" . $wp_title;
-                wp_title();
+                foreach($this->jsonFields as $fieldName){
+                    if(empty($iro_job[$fieldName])){
+                        $iro_job[$fieldName] = "- Nicht ausgefüllt -";
+                    }
+                }
+
+                $wp_title = $this->pageTitle . " | " . $wp_title;
+                //wp_title();
             }
+
+
 
 
             include_once(plugin_dir_path(__FILE__).'views/jobdetail.php');
