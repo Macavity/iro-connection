@@ -30,11 +30,11 @@ get_header(); ?>
                             the_content();
                         the_post();
                         ?>
-                        <p>&nbsp;</p>
                         <?php if(!empty($iro_job['logo_src'])) { ?>
+                            <p>&nbsp;</p>
                             <p align="center"><img src="<?=$iro_job['logo_src']?>"/></p>
+                            <p>&nbsp;</p>
                         <?php } ?>
-                        <p>&nbsp;</p>
                         <p><?=$iro_job['job_intro']?></p>
 
                         <h1><?=$iro_job['position']?></h1>

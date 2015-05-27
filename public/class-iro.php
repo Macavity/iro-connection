@@ -22,11 +22,11 @@ class iRO_Connection {
     /**
      * Plugin version, used for cache-busting of style and script file references.
      *
-     * @since   1.0.0
-     *
      * @var     string
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
+
+    const API_DOMAIN = 'http://api-dev.paneon.de';
 
     /**
      * Unique identifier
@@ -158,6 +158,13 @@ class iRO_Connection {
         return $rules;
     }
 
+    public static function get_api_domain(){
+        return self::API_DOMAIN;
+    }
+
+    public static function get_serial(){
+        return get_option('iro_connection_serial');
+    }
 
     public function add_template_redirect(){
         global $wp_query, $wpdb, $wp_title;
@@ -171,7 +178,7 @@ class iRO_Connection {
             $iro_jobId = get_query_var('job_id');
             $iro_serial = get_option('iro_connection_serial');
 
-            $curlUrl = 'http://api-dev.paneon.de/data/'.$iro_serial.'/job-detail/'.$iro_jobId;
+            $curlUrl = self::API_DOMAIN.'/data/'.$iro_serial.'/job-detail/'.$iro_jobId;
 
             $curlHandle = curl_init($curlUrl);
             curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);

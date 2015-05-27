@@ -5,11 +5,15 @@
  * @package iRO_Connection
  */
 
+$apiDomain = iRO_Connection::get_api_domain();
+
+$iroSerial = iRO_Connection::get_serial();
+
 /*
  * Load Jobs from H2H
  */
 
-$curlUrl = 'http://api-dev.paneon.de/data/006D4-PPAD0-R70AA/jobs/all';
+$curlUrl = $apiDomain.'/data/'.$iroSerial.'/jobs/all';
 
 $curlHandle = curl_init($curlUrl);
 curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -25,6 +29,7 @@ $joblist = array();
 if(isset($jsonData['results'])){
     $joblist = $jsonData['results'];
 }
+
 
 get_header(); ?>
 
