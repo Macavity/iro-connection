@@ -13,7 +13,7 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.3';
 
     const API_DOMAIN = 'http://api-dev.paneon.de';
 
@@ -147,10 +147,18 @@ class iRO_Connection {
         return $rules;
     }
 
+    /**
+     * @since 1.0.1
+     * @return string
+     */
     public static function get_api_domain(){
         return self::API_DOMAIN;
     }
 
+    /**
+     * @since 1.0.1
+     * @return string
+     */
     public static function get_serial(){
         return get_option('iro_connection_serial');
     }
