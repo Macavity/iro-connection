@@ -1,6 +1,6 @@
 <?php
 /**
- * iRO Connection
+ * iRO Connection Admin
  *
  * @package     Paneon_iRO
  * @author      Alexander Pape <a.pape@paneon.de>
@@ -14,11 +14,6 @@
  * FileMaker Password
  *
  *
- */
-
-/**
- * @package     iRO_Connection_Admin
- * @author      Alexander Pape <a.pape@paneon.de>
  */
 class iRO_Connection_Admin {
 
