@@ -28,7 +28,7 @@ get_header(); ?>
 
                         <?php
                             the_content();
-                        the_post();
+                            the_post();
                         ?>
                         <?php if(!empty($iro_job['logo_src'])) { ?>
                             <p>&nbsp;</p>
