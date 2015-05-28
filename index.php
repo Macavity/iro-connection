@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 require 'plugin-update-checker/plugin-update-checker.php';
 
 $myUpdateChecker = PucFactory::buildUpdateChecker(
-    'http://example.com/path/to/metadata.json',
+    'http://www.paneon.de/wp-content/plugins/iro-connection/metadata.json',
     __FILE__
 );
 
