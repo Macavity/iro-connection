@@ -6,17 +6,6 @@
  * @author    Alexander Pape <a.pape@paneon.de>
  * @license   GPL-2.0+
  */
-
-/**
- * Plugin class. This class should ideally be used to work with the
- * public-facing side of the WordPress site.
- *
- * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-iro-admin.php`
- *
- * @package Plugin_Name
- * @author  Your Name <email@example.com>
- */
 class iRO_Connection {
 
     /**
