@@ -28,7 +28,9 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
     __FILE__
 );
 
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-iro.php' );
+$currentDir = plugin_dir_path(__FILE__);
+
+require_once( $currentDir.'public/class-iro.php' );
 
 register_activation_hook( __FILE__, array( 'iRO_Connection', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'iRO_Connection', 'deactivate' ) );
@@ -41,7 +43,7 @@ add_action( 'plugins_loaded', array( 'iRO_Connection', 'get_instance' ) );
 
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
-    require_once( plugin_dir_path( __FILE__ ) . 'admin/class-iro-admin.php' );
+    require_once( $currentDir.'admin/class-iro-admin.php' );
     add_action( 'plugins_loaded', array( 'iRO_Connection_Admin', 'get_instance' ) );
 
 }

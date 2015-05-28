@@ -147,10 +147,18 @@ class iRO_Connection {
         return $rules;
     }
 
+    /**
+     * @since 1.0.1
+     * @return string
+     */
     public static function get_api_domain(){
         return self::API_DOMAIN;
     }
 
+    /**
+     * @since 1.0.1
+     * @return string
+     */
     public static function get_serial(){
         return get_option('iro_connection_serial');
     }
