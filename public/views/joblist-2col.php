@@ -1,6 +1,6 @@
 <?php
 /**
- * iRO Jobliste - Type I
+ * iRO Jobliste - Type II
  *
  * @package iRO_Connection
  */

@@ -214,13 +214,21 @@ class iRO_Connection_Admin {
                 'label' => 'iRO Seriennummer'
             ),
             array(
-                'id' => 'iro_connection_db_user',
-                'label' => 'iRO Data Benutzer'
+                'id' => 'iro_connection_joblist_wrapper_id',
+                'label' => 'Style Wrapper Id'
             ),
-            array(
-                'id' => 'iro_connection_db_password',
-                'label' => 'iRO Data Passwort'
-            ),
+			array(
+				'id' => 'iro_connection_joblist_wrapper_class',
+				'label' => 'Style Wrapper Class'
+			),
+			array(
+				'id' => 'iro_connection_joblist_content_id',
+				'label' => 'Style Content Id'
+			),
+			array(
+				'id' => 'iro_connection_joblist_content_class',
+				'label' => 'Style Content Class'
+			),
         );
 
         foreach($mainFields as $field){
