@@ -104,7 +104,8 @@ class iRO_Connection {
 
         // Add your templates to this array.
         $this->templates = array(
-            'joblist.php'     => 'iRO Joblist',
+            'joblist-blocks.php'    => 'iRO Jobliste',
+            'joblist.php'           => 'iRO Jobliste - Tabelle',
         );
 
     }
@@ -289,6 +290,54 @@ class iRO_Connection {
         else { echo $file; }
 
         return $template;
+
+    }
+
+    public function shortcodeJobsCount($atts){
+
+        extract(
+            shortcode_atts(
+                array(
+                    'type' => 'open',
+                ),
+                $atts )
+        );
+
+        return $this->getJobsCount($type);
+
+    }
+
+    public static function getJobsCount($type = 'open'){
+        $apiDomain = iRO_Connection::get_api_domain();
+
+        $iroSerial = iRO_Connection::get_serial();
+
+        /*
+         * Load Jobs from H2H
+         */
+        if($type == "archive"){
+            $curlUrl = $apiDomain.'/data/'.$iroSerial.'/jobs/all';
+
+        }
+        else {
+            $curlUrl = $apiDomain.'/data/'.$iroSerial.'/jobs/all/archive';
+        }
+
+        $curlHandle = curl_init($curlUrl);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+        $requestData = curl_exec($curlHandle);
+
+        curl_close($curlHandle);
+
+        $jsonData = json_decode($requestData, true);
+
+        $joblist = array();
+
+        if(isset($jsonData['results'])){
+            $joblist = $jsonData['results'];
+        }
+        return count($joblist);
 
     }
 
