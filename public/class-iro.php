@@ -42,7 +42,7 @@ class iRO_Connection {
 
     private $pageTitle = "";
 
-    private $jsonFields = array(
+    public static $jsonFields = array(
         'job_intro','position','location', 'industry',
         'job_description','job_candidate','job_desirability',
         //'job_resume',
@@ -167,16 +167,20 @@ class iRO_Connection {
     public function add_template_redirect(){
         global $wp_query, $wpdb, $wp_title;
 
+        if (!session_id()) {
+            session_start();
+        }
+
         if(get_query_var('job_id')){
             $wp_query->is_404 = false;
 
             $page_name_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_name ='jobdetail'");
             get_post($page_name_id);
 
-            $iro_jobId = get_query_var('job_id');
-            $iro_serial = get_option('iro_connection_serial');
+            $jobId = get_query_var('job_id');
+            $iroSerial = get_option('iro_connection_serial');
 
-            $curlUrl = self::API_DOMAIN.'/data/'.$iro_serial.'/job-detail/'.$iro_jobId;
+            $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
 
             $curlHandle = curl_init($curlUrl);
             curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -196,12 +200,12 @@ class iRO_Connection {
                     $this->pageTitle = $iro_job['google_title'];
                 }
                 else {
-                    $this->pageTitle = $iro_job['position_name'];
+                    $this->pageTitle = $iro_job['position'];
                 }
 
-                foreach($this->jsonFields as $fieldName){
+                foreach(self::$jsonFields as $fieldName){
                     if(empty($iro_job[$fieldName])){
-                        $iro_job[$fieldName] = "- Nicht ausgefüllt -";
+                        $iro_job[$fieldName] = "";
                     }
                 }
 
@@ -209,11 +213,8 @@ class iRO_Connection {
                 //wp_title();
             }
 
-
-
-
-            include_once(plugin_dir_path(__FILE__).'views/jobdetail.php');
-            exit();
+            //include_once(plugin_dir_path(__FILE__).'views/jobdetail.php');
+            //exit();
         }
     }
 
@@ -293,7 +294,7 @@ class iRO_Connection {
 
     }
 
-    public function shortcodeJobsCount($atts){
+    public static function shortcodeJobsCount($atts, $content = ""){
 
         extract(
             shortcode_atts(
@@ -303,8 +304,72 @@ class iRO_Connection {
                 $atts )
         );
 
-        return $this->getJobsCount($type);
+        return '<span class="jsIroJobCount">'.iRO_Connection::getJobsCount($type).'</span>';
 
+    }
+
+    public static function getJobDetail($jobId = 0){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
+
+        $curlHandle = curl_init($curlUrl);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+        $requestData = curl_exec($curlHandle);
+
+        curl_close($curlHandle);
+
+        $jsonData = json_decode($requestData, true);
+
+        $iro_job = array();
+
+        print_r($jsonData);
+
+        if(isset($jsonData['result'])){
+            $iro_job = $jsonData['result'];
+
+            foreach(self::$jsonFields as $fieldName){
+                if(empty($iro_job[$fieldName])){
+                    $iro_job[$fieldName] = "";
+                }
+            }
+
+        }
+
+        return $iro_job;
+    }
+
+    public static function getJobs($type = 'open'){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        /*
+         * Load Jobs from H2H
+         */
+        if($type == "archive"){
+            $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/all/archive';
+        }
+        else {
+            $curlUrl =  self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/all';
+        }
+
+        $curlHandle = curl_init($curlUrl);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+        $requestData = curl_exec($curlHandle);
+
+        curl_close($curlHandle);
+
+        $jsonData = json_decode($requestData, true);
+
+        $joblist = array();
+
+        if(isset($jsonData['results'])){
+            $joblist = $jsonData['results'];
+        }
+        return $joblist;
     }
 
     public static function getJobsCount($type = 'open'){

@@ -41,7 +41,7 @@ add_action( 'plugins_loaded', array( 'iRO_Connection', 'get_instance' ) );
  * Shortcodes
  *----------------------------------------------------------------------------*/
 
-add_shortcode( 'iro_jobcount', array('iRO_Connection', 'shortcodeJobCount') );
+include_once ('public/iro_shortcodes.php');
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality

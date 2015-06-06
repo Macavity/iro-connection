@@ -5,31 +5,7 @@
  * @package iRO_Connection
  */
 
-$apiDomain = iRO_Connection::get_api_domain();
-
-$iroSerial = iRO_Connection::get_serial();
-
-/*
- * Load Jobs from H2H
- */
-
-$curlUrl = $apiDomain.'/data/'.$iroSerial.'/jobs/all';
-
-$curlHandle = curl_init($curlUrl);
-curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-
-$requestData = curl_exec($curlHandle);
-
-curl_close($curlHandle);
-
-$jsonData = json_decode($requestData, true);
-
-$joblist = array();
-
-if(isset($jsonData['results'])){
-    $joblist = $jsonData['results'];
-}
-
+$iRO_Jobs = iRO_Connection::getJobs();
 
 get_header(); ?>
 
@@ -69,7 +45,7 @@ get_header(); ?>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach($joblist as $job){ ?>
+                        <?php foreach($iRO_Jobs as $job){ ?>
                             <tr>
                                 <td class="schwarz_standard"><?=$job['fm_id']?></td>
                                 <td class="main">
