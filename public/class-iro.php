@@ -325,8 +325,6 @@ class iRO_Connection {
 
         $iro_job = array();
 
-        print_r($jsonData);
-
         if(isset($jsonData['result'])){
             $iro_job = $jsonData['result'];
 
