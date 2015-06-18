@@ -404,6 +404,46 @@ class iRO_Connection {
 
     }
 
+    public static function formatText($text){
+
+        // FM 12 liefert encodierte Entities
+        $text = html_entity_decode($text);
+
+
+        $textLines = explode("\n",$text);
+        $formattedText = '';
+
+        foreach($textLines as $line){
+            // Kein Listenpunkt
+            if(preg_match("/^!(.*)$/",$line,$match)){
+                //$line = preg_replace("/^!(.*)$/","\n<li style=\"list-style-type:none\">$1</li>",$line);
+                $line = "\n<li style=\"list-style-type:none\">$match[1]</li>";
+            }
+            // Unterberschrift
+            elseif(preg_match("/^(.*):$/",$line,$match)){
+                //$line = preg_replace("/^(.*):$/","</ul>\n<b>$1:</b>\n<ul>",$line);
+                $line = "</ul>\n<b>$match[1]:</b>\n<ul>";
+            }
+            // Listenpunkt
+            elseif(preg_match("/^(.*)$/",$line,$match)){
+                //$line = preg_replace("/^(.*)$/","\n<li>$1</li>",$line);
+                $line = "\n<li>$match[1]</li>";
+            }
+
+            // Korrekturen
+            if(preg_match("/<li><b>(.*):<\/b><\/li>/",$line,$match)){
+                $line = "</ul>\n<b>$match[1]:</b>\n<ul>";
+            }
+            $formattedText .= $line;
+        }
+
+        // Leere Zeile
+        $formattedText = str_replace("<li><\/li>",'<li style="list-style-type:none;">&nbsp;</li>',$formattedText);
+        $formattedText = str_replace("<li></li>",'<li style="list-style-type:none;">&nbsp;</li>',$formattedText);
+
+        return $formattedText;
+    }
+
     /**
      * Return an instance of this class.
      *

@@ -55,3 +55,17 @@ if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 }
 
 
+/*----------------------------------------------------------------------------*
+ * Sidebar Job Menu
+ *----------------------------------------------------------------------------*/
+
+function iro_register_menus() {
+    register_nav_menus(
+        array(
+            'iRO Job Navigation' => "Jobdatenbank",
+
+        )
+    );
+}
+add_action( 'init', 'iro_register_menus' );
+
