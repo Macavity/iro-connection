@@ -38,6 +38,12 @@ register_deactivation_hook( __FILE__, array( 'iRO_Connection', 'deactivate' ) );
 add_action( 'plugins_loaded', array( 'iRO_Connection', 'get_instance' ) );
 
 /*----------------------------------------------------------------------------*
+ * Shortcodes
+ *----------------------------------------------------------------------------*/
+
+include_once ('public/iro_shortcodes.php');
+
+/*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
@@ -47,3 +53,5 @@ if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
     add_action( 'plugins_loaded', array( 'iRO_Connection_Admin', 'get_instance' ) );
 
 }
+
+
