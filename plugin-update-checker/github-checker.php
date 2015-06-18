@@ -255,7 +255,7 @@ class PucGitHubChecker_2_0 extends PluginUpdateChecker_2_0 {
 	 */
 	protected function parseMarkdown($markdown) {
 		if ( !class_exists('Parsedown') ) {
-			require_once(dirname(__FILE__) . '/vendor/Parsedown.php');
+			require_once(plugin_dir_path(__FILE__) . '/vendor/Parsedown.php');
 		}
 
 		$instance = Parsedown::instance();
