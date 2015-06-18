@@ -214,21 +214,9 @@ class iRO_Connection_Admin {
                 'label' => 'iRO Seriennummer'
             ),
             array(
-                'id' => 'iro_connection_joblist_wrapper_id',
-                'label' => 'Style Wrapper Id'
+                'id' => 'iro_api_token',
+                'label' => 'API Security Token'
             ),
-			array(
-				'id' => 'iro_connection_joblist_wrapper_class',
-				'label' => 'Style Wrapper Class'
-			),
-			array(
-				'id' => 'iro_connection_joblist_content_id',
-				'label' => 'Style Content Id'
-			),
-			array(
-				'id' => 'iro_connection_joblist_content_class',
-				'label' => 'Style Content Class'
-			),
         );
 
         foreach($mainFields as $field){
