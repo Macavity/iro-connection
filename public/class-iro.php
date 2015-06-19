@@ -340,68 +340,53 @@ class iRO_Connection {
         return $iro_job;
     }
 
+    /**
+     * @param string $type
+     * @return array
+     */
     public static function getJobs($type = 'open'){
 
         $iroSerial = get_option('iro_connection_serial');
 
-        /*
-         * Load Jobs from H2H
-         */
-        if($type == "archive"){
-            $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/all/archive';
-        }
-        else {
-            $curlUrl =  self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/all';
-        }
-
-        $curlHandle = curl_init($curlUrl);
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-
-        $requestData = curl_exec($curlHandle);
-
-        curl_close($curlHandle);
-
-        $jsonData = json_decode($requestData, true);
-
         $joblist = array();
 
-        if(isset($jsonData['results'])){
-            $joblist = $jsonData['results'];
+        try{
+            /*
+             * Load Jobs from API
+             */
+            if($type == "archive" || $type == "archiv"){
+                $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/desc/archiv';
+            }
+            else {
+                $curlUrl =  self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/desc';
+            }
+
+            $curlHandle = curl_init($curlUrl);
+            curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+            $requestData = curl_exec($curlHandle);
+
+            curl_close($curlHandle);
+
+            $jsonData = json_decode($requestData, true);
+
+            if(isset($jsonData['results'])){
+                $joblist = $jsonData['results'];
+            }
+
         }
+        catch(Exception $exception){
+
+        }
+
         return $joblist;
     }
 
     public static function getJobsCount($type = 'open'){
-        $apiDomain = iRO_Connection::get_api_domain();
 
-        $iroSerial = iRO_Connection::get_serial();
+        $joblistResults = self::getJobs($type);
 
-        /*
-         * Load Jobs from H2H
-         */
-        if($type == "archive"){
-            $curlUrl = $apiDomain.'/data/'.$iroSerial.'/jobs/all';
-
-        }
-        else {
-            $curlUrl = $apiDomain.'/data/'.$iroSerial.'/jobs/all/archive';
-        }
-
-        $curlHandle = curl_init($curlUrl);
-        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-
-        $requestData = curl_exec($curlHandle);
-
-        curl_close($curlHandle);
-
-        $jsonData = json_decode($requestData, true);
-
-        $joblist = array();
-
-        if(isset($jsonData['results'])){
-            $joblist = $jsonData['results'];
-        }
-        return count($joblist);
+        return count($joblistResults);
 
     }
 
