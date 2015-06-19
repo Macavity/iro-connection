@@ -17,6 +17,12 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
+$currentDir = "/wp-content/plugins/iro-connection";
+$currentDir = plugin_dir_path(__FILE__);
+
+// Include Parsedown Formatter
+require_once( $currentDir.'vendor/Parsedown.php');
+
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
@@ -28,7 +34,6 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
     __FILE__
 );
 
-$currentDir = plugin_dir_path(__FILE__);
 
 require_once( $currentDir.'public/class-iro.php' );
 

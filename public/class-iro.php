@@ -13,7 +13,7 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.3';
+    const VERSION = '1.0.5';
 
     const API_DOMAIN = 'http://api-dev.paneon.de';
 
@@ -295,6 +295,7 @@ class iRO_Connection {
     }
 
     public static function shortcodeJobsCount($atts, $content = ""){
+        $type = "";
 
         extract(
             shortcode_atts(
