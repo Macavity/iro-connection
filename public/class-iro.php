@@ -6,6 +6,10 @@
  * @author    Alexander Pape <a.pape@paneon.de>
  * @license   GPL-2.0+
  */
+
+define("IRO_FORMATTER_BASIC", 1);
+define("IRO_FORMATTER_SIMPLE", 2);
+
 class iRO_Connection {
 
     /**
@@ -390,7 +394,35 @@ class iRO_Connection {
 
     }
 
-    public static function formatText($text){
+    public static function allowSimpleHtml($text){
+        // FM 12 liefert decodierte Entities
+        $text = html_entity_decode($text);
+
+        /*
+         * Text mit htmlentities anwenden,
+         */
+        $text = htmlspecialchars_decode( htmlentities($text, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
+
+        // Tags entfernen die nicht erlaubt sind.
+        $text = strip_tags($text, '<p><a><b><i><br><ul><li><ol><hr>');
+
+        $text = str_replace("&amp;", "&", $text);
+
+        return $text;
+    }
+
+    public static function formatText($text, $formatter = IRO_FORMATTER_SIMPLE){
+
+        if($formatter == IRO_FORMATTER_BASIC){
+            return iRO_Connection::allowSimpleHtml($text);
+        }
+        if($formatter == IRO_FORMATTER_SIMPLE){
+            return iRO_Connection::simpleFormatting($text);
+        }
+
+    }
+
+    public static function simpleFormatting($text){
 
         // FM 12 liefert encodierte Entities
         $text = html_entity_decode($text);
@@ -427,7 +459,7 @@ class iRO_Connection {
         $formattedText = str_replace("<li><\/li>",'<li style="list-style-type:none;">&nbsp;</li>',$formattedText);
         $formattedText = str_replace("<li></li>",'<li style="list-style-type:none;">&nbsp;</li>',$formattedText);
 
-        return $formattedText;
+        return '<ul>'.$formattedText.'</ul>';
     }
 
     /**
