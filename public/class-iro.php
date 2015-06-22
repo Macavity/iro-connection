@@ -7,9 +7,6 @@
  * @license   GPL-2.0+
  */
 
-define("IRO_FORMATTER_BASIC", 1);
-define("IRO_FORMATTER_SIMPLE", 2);
-
 class iRO_Connection {
 
     /**

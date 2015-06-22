@@ -23,6 +23,19 @@ $currentDir = plugin_dir_path(__FILE__);
 // Include Parsedown Formatter
 require_once( $currentDir.'vendor/Parsedown.php');
 
+
+/*
+ *---------------------------------------------------------------
+ * Defines
+ *---------------------------------------------------------------
+ */
+define('IRO_JOB_TYPE_HIDDEN', 0);
+define('IRO_JOB_TYPE_NORMAL', 1);
+define('IRO_JOB_TYPE_ARCHIVE', 2);
+
+define("IRO_FORMATTER_BASIC", 1);
+define("IRO_FORMATTER_SIMPLE", 2);
+
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
