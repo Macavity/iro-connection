@@ -62,6 +62,12 @@ add_action( 'plugins_loaded', array( 'iRO_Connection', 'get_instance' ) );
 include_once ('public/iro_shortcodes.php');
 
 /*----------------------------------------------------------------------------*
+ * Filter Box Widget
+ *----------------------------------------------------------------------------*/
+
+include_once ('public/iRO_Widget.php');
+
+/*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
@@ -71,19 +77,3 @@ if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
     add_action( 'plugins_loaded', array( 'iRO_Connection_Admin', 'get_instance' ) );
 
 }
-
-
-/*----------------------------------------------------------------------------*
- * Sidebar Job Menu
- *----------------------------------------------------------------------------*/
-
-function iro_register_menus() {
-    register_nav_menus(
-        array(
-            'iRO Job Navigation' => "Jobdatenbank",
-
-        )
-    );
-}
-add_action( 'init', 'iro_register_menus' );
-
