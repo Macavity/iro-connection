@@ -6,14 +6,15 @@
  * @author    Alexander Pape <a.pape@paneon.de>
  * @license   GPL-2.0+
  */
+
 class iRO_Connection {
 
     /**
-     * Plugin version, used for cache-busting of style and script file references.
+     * Plugin version
      *
      * @var     string
      */
-    const VERSION = '1.0.3';
+    const VERSION = '1.0.5';
 
     const API_DOMAIN = 'http://api-dev.paneon.de';
 
@@ -42,7 +43,7 @@ class iRO_Connection {
 
     private $pageTitle = "";
 
-    private $jsonFields = array(
+    public static $jsonFields = array(
         'job_intro','position','location', 'industry',
         'job_description','job_candidate','job_desirability',
         //'job_resume',
@@ -104,7 +105,8 @@ class iRO_Connection {
 
         // Add your templates to this array.
         $this->templates = array(
-            'joblist.php'     => 'iRO Joblist',
+            'joblist-blocks.php'    => 'iRO Jobliste',
+            'joblist.php'           => 'iRO Jobliste - Tabelle',
         );
 
     }
@@ -166,16 +168,20 @@ class iRO_Connection {
     public function add_template_redirect(){
         global $wp_query, $wpdb, $wp_title;
 
+        if (!session_id()) {
+            session_start();
+        }
+
         if(get_query_var('job_id')){
             $wp_query->is_404 = false;
 
             $page_name_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_name ='jobdetail'");
             get_post($page_name_id);
 
-            $iro_jobId = get_query_var('job_id');
-            $iro_serial = get_option('iro_connection_serial');
-
-            $curlUrl = self::API_DOMAIN.'/data/'.$iro_serial.'/job-detail/'.$iro_jobId;
+            $jobId = get_query_var('job_id');
+            $iroSerial = get_option('iro_connection_serial');
+            
+            $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
 
             $curlHandle = curl_init($curlUrl);
             curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -195,12 +201,12 @@ class iRO_Connection {
                     $this->pageTitle = $iro_job['google_title'];
                 }
                 else {
-                    $this->pageTitle = $iro_job['position_name'];
+                    $this->pageTitle = $iro_job['position'];
                 }
 
-                foreach($this->jsonFields as $fieldName){
+                foreach(self::$jsonFields as $fieldName){
                     if(empty($iro_job[$fieldName])){
-                        $iro_job[$fieldName] = "- Nicht ausgefüllt -";
+                        $iro_job[$fieldName] = "";
                     }
                 }
 
@@ -208,11 +214,8 @@ class iRO_Connection {
                 //wp_title();
             }
 
-
-
-
-            include_once(plugin_dir_path(__FILE__).'views/jobdetail.php');
-            exit();
+            //include_once(plugin_dir_path(__FILE__).'views/jobdetail.php');
+            //exit();
         }
     }
 
@@ -290,6 +293,170 @@ class iRO_Connection {
 
         return $template;
 
+    }
+
+    public static function shortcodeJobsCount($atts, $content = ""){
+        $type = "";
+
+        extract(
+            shortcode_atts(
+                array(
+                    'type' => 'open',
+                ),
+                $atts )
+        );
+
+        return '<span class="jsIroJobCount">'.iRO_Connection::getJobsCount($type).'</span>';
+
+    }
+
+    public static function getJobDetail($jobId = 0){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
+
+        $curlHandle = curl_init($curlUrl);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+        $requestData = curl_exec($curlHandle);
+
+        curl_close($curlHandle);
+
+        $jsonData = json_decode($requestData, true);
+
+        $iro_job = array();
+
+        if(isset($jsonData['result'])){
+            $iro_job = $jsonData['result'];
+
+            foreach(self::$jsonFields as $fieldName){
+                if(empty($iro_job[$fieldName])){
+                    $iro_job[$fieldName] = "";
+                }
+            }
+
+        }
+
+        return $iro_job;
+    }
+
+    /**
+     * @param string $type
+     * @return array
+     */
+    public static function getJobs($type = 'open'){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        $joblist = array();
+
+        try{
+            /*
+             * Load Jobs from API
+             */
+            if($type == "archive" || $type == "archiv"){
+                $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/desc/archiv';
+            }
+            else {
+                $curlUrl =  self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/desc';
+            }
+
+            $curlHandle = curl_init($curlUrl);
+            curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+            $requestData = curl_exec($curlHandle);
+
+            curl_close($curlHandle);
+
+            $jsonData = json_decode($requestData, true);
+
+            if(isset($jsonData['results'])){
+                $joblist = $jsonData['results'];
+            }
+
+        }
+        catch(Exception $exception){
+
+        }
+
+        return $joblist;
+    }
+
+    public static function getJobsCount($type = 'open'){
+
+        $joblistResults = self::getJobs($type);
+
+        return count($joblistResults);
+
+    }
+
+    public static function allowSimpleHtml($text){
+        // FM 12 liefert decodierte Entities
+        $text = html_entity_decode($text);
+
+        /*
+         * Text mit htmlentities anwenden,
+         */
+        $text = htmlspecialchars_decode( htmlentities($text, ENT_NOQUOTES, 'UTF-8'), ENT_NOQUOTES);
+
+        // Tags entfernen die nicht erlaubt sind.
+        $text = strip_tags($text, '<p><a><b><i><br><ul><li><ol><hr>');
+
+        $text = str_replace("&amp;", "&", $text);
+
+        return $text;
+    }
+
+    public static function formatText($text, $formatter = IRO_FORMATTER_SIMPLE){
+
+        if($formatter == IRO_FORMATTER_BASIC){
+            return iRO_Connection::allowSimpleHtml($text);
+        }
+        if($formatter == IRO_FORMATTER_SIMPLE){
+            return iRO_Connection::simpleFormatting($text);
+        }
+
+    }
+
+    public static function simpleFormatting($text){
+
+        // FM 12 liefert encodierte Entities
+        $text = html_entity_decode($text);
+
+
+        $textLines = explode("\n",$text);
+        $formattedText = '';
+
+        foreach($textLines as $line){
+            // Kein Listenpunkt
+            if(preg_match("/^!(.*)$/",$line,$match)){
+                //$line = preg_replace("/^!(.*)$/","\n<li style=\"list-style-type:none\">$1</li>",$line);
+                $line = "\n<li style=\"list-style-type:none\">$match[1]</li>";
+            }
+            // Unterberschrift
+            elseif(preg_match("/^(.*):$/",$line,$match)){
+                //$line = preg_replace("/^(.*):$/","</ul>\n<b>$1:</b>\n<ul>",$line);
+                $line = "</ul>\n<b>$match[1]:</b>\n<ul>";
+            }
+            // Listenpunkt
+            elseif(preg_match("/^(.*)$/",$line,$match)){
+                //$line = preg_replace("/^(.*)$/","\n<li>$1</li>",$line);
+                $line = "\n<li>$match[1]</li>";
+            }
+
+            // Korrekturen
+            if(preg_match("/<li><b>(.*):<\/b><\/li>/",$line,$match)){
+                $line = "</ul>\n<b>$match[1]:</b>\n<ul>";
+            }
+            $formattedText .= $line;
+        }
+
+        // Leere Zeile
+        $formattedText = str_replace("<li><\/li>",'<li style="list-style-type:none;">&nbsp;</li>',$formattedText);
+        $formattedText = str_replace("<li></li>",'<li style="list-style-type:none;">&nbsp;</li>',$formattedText);
+
+        return '<ul>'.$formattedText.'</ul>';
     }
 
     /**

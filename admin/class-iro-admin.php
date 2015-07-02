@@ -214,12 +214,8 @@ class iRO_Connection_Admin {
                 'label' => 'iRO Seriennummer'
             ),
             array(
-                'id' => 'iro_connection_db_user',
-                'label' => 'iRO Data Benutzer'
-            ),
-            array(
-                'id' => 'iro_connection_db_password',
-                'label' => 'iRO Data Passwort'
+                'id' => 'iro_api_token',
+                'label' => 'API Security Token'
             ),
         );
 

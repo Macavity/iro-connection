@@ -238,7 +238,7 @@ Class PucReadmeParser {
 
 		if ( $markdown ) { // Parse markdown.
 			if ( !class_exists('Parsedown') ) {
-				require_once(dirname(__FILE__) . '/Parsedown.php');
+				require_once(plugin_dir_path(__FILE__) . '/vendor/Parsedown.php');
 			}
 			$instance = Parsedown::instance();
 			$text = $instance->text($text);

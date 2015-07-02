@@ -1,12 +1,16 @@
 <?php
 /**
- * iRO Joblist
+ * iRO Jobdetail
  *
  * @package iRO_Connection
  */
 
 /** @var $iro_jobId */
 /** @var $iro_job */
+
+$iro_jobId = get_query_var("job_id");
+
+$iro_job = iRO_Connection::getJobDetail($iro_jobId);
 
 get_header(); ?>
 
@@ -37,42 +41,42 @@ get_header(); ?>
                         <?php } ?>
                         <p><?=$iro_job['job_intro']?></p>
 
-                        <h1><?=$iro_job['position']?></h1>
+                        <h1>Position: <?php echo $iro_job['position']?></h1>
 
                         <p>&nbsp;</p>
-                        <p>Projektnummer: <?=$iro_job['fm_id']?></p>
-                        <p>Position: <?=$iro_job['position']?></p>
+                        <p>Projektnummer: <?php echo $iro_job['fm_id']?></p>
+                        <p>Position: <?php echo $iro_job['position']?></p>
 
                     <div class="jobheader"><!-- --></div>
                     <div class="main">
                         <p>
                             <br>
-                            <b><span class="subheader"><?=__('City')?></span></b>: <?=$iro_job['location']?><br>
-                            <b><span class="subheader"><?=__('Industry')?></span></b>: <?=$iro_job['industry']?>
+                            <b><span class="subheader"><?php echo __('City')?></span></b>: <?php echo $iro_job['location']?><br>
+                            <b><span class="subheader"><?php echo __('Industry')?></span></b>: <?php echo $iro_job['industry']?>
                         </p>
                     </div>
                     <div class="main">
                         <p>
                             <br>
-                            <span class="subheader"><b><?=__("The Position")?></b></span><br>
-                        <ul><?=$iro_job['job_description']?></ul>
+                            <span class="subheader"><b><?php echo __("The Position")?></b></span><br>
+                        <ul><?php echo $iro_job['job_description']?></ul>
                         </p>
                         <p>&nbsp;</p>
                     </div>
                     <div class="main">
-                        <span class="subheader"><b><?=__("The ideal candidate")?></b></span><br>
-                        <ul><?=$iro_job['job_candidate']?></ul>
+                        <span class="subheader"><b><?php echo __("The ideal candidate")?></b></span><br>
+                        <ul><?php echo $iro_job['job_candidate']?></ul>
                     </div>
 
                     <div class="main">
-                        <span class="subheader"><b><?=__("Why is this position desirable")?></b></span><br>
-                        <ul><?=$iro_job['job_desirability']?></ul>
+                        <span class="subheader"><b><?php echo __("Why is this position desirable")?></b></span><br>
+                        <ul><?php echo $iro_job['job_desirability']?></ul>
                     </div>
 
                     <div class="main">
-                        <p><?=$iro_job['job_resume']?></p>
+                        <p><?php echo $iro_job['job_resume']?></p>
                         <p>
-                            <span class="Stil2">E-Mail an</span>: <a href="mailto:<?=$iro_job['contact_mail']?>?subject=ReferenceCode-<?=$iro_job['fm_id']?>"><?=$iro_job['contact_name']?></a>
+                            <span class="Stil2">E-Mail an</span>: <a href="mailto:<?php echo $iro_job['contact_mail']?>?subject=ReferenceCode-<?php echo $iro_job['fm_id']?>"><?php echo $iro_job['contact_name']?></a>
                         </p>
                     </div>
 
