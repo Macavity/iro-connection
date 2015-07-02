@@ -10,7 +10,7 @@
 class iRO_Connection {
 
     /**
-     * Plugin version, used for cache-busting of style and script file references.
+     * Plugin version
      *
      * @var     string
      */
