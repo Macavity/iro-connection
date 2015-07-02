@@ -180,7 +180,7 @@ class iRO_Connection {
 
             $jobId = get_query_var('job_id');
             $iroSerial = get_option('iro_connection_serial');
-
+            
             $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
 
             $curlHandle = curl_init($curlUrl);
