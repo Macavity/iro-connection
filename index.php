@@ -8,7 +8,7 @@
  * Plugin URI:          http://www.heads2hunt.de
  * Description:         Plugin for displaying positions from an iRO Database
  * Author:              Alexander Pape <a.pape@paneon.de>
- * Version:             1.0.4
+ * Version:             1.0.5
  * Author URI:          http://www.paneon.de
 */
 
