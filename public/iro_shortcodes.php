@@ -16,7 +16,7 @@ function iRO_Connection_shortcodeJobsCount($atts, $content = ""){
 
 function iRO_Connection_shortcodeJobFilter(){
 
-    $placeholder = __("To search type and hit enter", "pape");
+    $placeholder = __("To search type and hit enter", "iro_connection");
 
     return '<input type="text" name="jobsearch_filter" id="jobsearch_filter" class="form-wrapper" placeholder="'.$placeholder.'" onfocus="if(this.value==this.defaultValue)this.value=\'\';" onblur="if(this.value==\'\')this.value=this.defaultValue;"/>';
 }

@@ -14,7 +14,7 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.5';
+    const VERSION = '1.0.6';
 
     const API_DOMAIN = 'http://api-dev.paneon.de';
 
