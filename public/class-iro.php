@@ -50,6 +50,10 @@ class iRO_Connection {
         'contact_name'
     );
 
+    private $jsFiles = array(
+        'iro_js_filter' => '/iro-connection/assets/js/joblist.js'
+    );
+
     /**
      * Initialize the plugin by setting localization and loading public scripts
      * and styles.
@@ -180,7 +184,7 @@ class iRO_Connection {
 
             $jobId = get_query_var('job_id');
             $iroSerial = get_option('iro_connection_serial');
-            
+
             $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
 
             $curlHandle = curl_init($curlUrl);
@@ -635,7 +639,7 @@ class iRO_Connection {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/iroconnection.css', __FILE__ ), array(), self::VERSION );
+        //wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/iroconnection.css', __FILE__ ), array(), self::VERSION );
     }
 
     /**
@@ -644,7 +648,16 @@ class iRO_Connection {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/main.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+
+        foreach($this->jsFiles as $plugin_slug => $plugin_url){
+            wp_deregister_script( $plugin_slug );
+            wp_register_script(
+                $plugin_slug,
+                plugins_url('/iro-connection/assets/js/joblist.js')
+            );
+            wp_enqueue_script( $plugin_slug );
+        }
+
     }
 
     /**

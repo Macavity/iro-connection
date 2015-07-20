@@ -67,22 +67,6 @@ include_once ('public/iro_shortcodes.php');
 
 include_once ('public/iRO_Widget.php');
 
-// iRO_JsFilter
-function iro_connection_scripts() {
-
-    $scriptHandle = 'iro_js_filter';
-
-    wp_deregister_script( $scriptHandle );
-    wp_register_script(
-        $scriptHandle,
-        plugins_url('/iro-connection/assets/js/joblist.js')
-    );
-    wp_enqueue_script( $scriptHandle );
-
-}
-
-add_action( 'wp_enqueue_scripts', 'iro_connection_scripts' );
-
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
