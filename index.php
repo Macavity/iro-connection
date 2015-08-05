@@ -8,7 +8,7 @@
  * Plugin URI:          http://www.heads2hunt.de
  * Description:         Plugin for displaying positions from an iRO Database
  * Author:              Alexander Pape <a.pape@paneon.de>
- * Version:             1.0.5
+ * Version:             1.0.6
  * Author URI:          http://www.paneon.de
 */
 
@@ -20,8 +20,10 @@ if ( ! defined( 'WPINC' ) ) {
 $currentDir = "/wp-content/plugins/iro-connection";
 $currentDir = plugin_dir_path(__FILE__);
 
+require_once( 'vendor/autoload.php');
+
 // Include Parsedown Formatter
-require_once( $currentDir.'vendor/Parsedown.php');
+require_once( 'vendor/Parsedown.php');
 
 
 /*
@@ -48,7 +50,10 @@ $myUpdateChecker = PucFactory::buildUpdateChecker(
 );
 
 
-require_once( $currentDir.'public/class-iro.php' );
+/*----------------------------------------------------------------------------*
+ * iRO_Connection
+ *----------------------------------------------------------------------------*/
+require_once( 'public/class-iro.php' );
 
 register_activation_hook( __FILE__, array( 'iRO_Connection', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'iRO_Connection', 'deactivate' ) );

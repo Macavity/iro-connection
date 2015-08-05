@@ -60,7 +60,7 @@ class iRO_Connection {
      *
      * @since     1.0.0
      */
-    private function __construct() {
+    protected function __construct() {
 
         // Load plugin text domain
         add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -461,6 +461,38 @@ class iRO_Connection {
         $formattedText = str_replace("<li></li>",'<li style="list-style-type:none;">&nbsp;</li>',$formattedText);
 
         return '<ul>'.$formattedText.'</ul>';
+    }
+
+    /**
+     * Makes a call to the API that will check if the cache needs to be refreshed
+     */
+    public static function check_cache($type){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        self::do_post_request(
+            self::API_DOMAIN.'/data/'.$iroSerial.'/check-cache/jobs/'.$type
+        );
+    }
+
+    protected static function do_post_request($url, $data = array(), $optional_headers = null,$getresponse = false) {
+        $params = array('http' => array(
+            'method' => 'GET',
+            'content' => $data
+        ));
+        if ($optional_headers !== null) {
+            $params['http']['header'] = $optional_headers;
+        }
+        $ctx = stream_context_create($params);
+        $fp = @fopen($url, 'rb', false, $ctx);
+        if (!$fp) {
+            return false;
+        }
+        if ($getresponse){
+            $response = stream_get_contents($fp);
+            return $response;
+        }
+        return true;
     }
 
     /**
