@@ -471,7 +471,7 @@ class iRO_Connection {
         $iroSerial = get_option('iro_connection_serial');
 
         self::do_post_request(
-            self::API_DOMAIN.'/data/'.$iroSerial.'/check-cache/jobs/'.$type
+            self::API_DOMAIN.'/search/'.$iroSerial.'/check-cache/jobs/'.$type
         );
     }
 
