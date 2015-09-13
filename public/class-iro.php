@@ -465,6 +465,7 @@ class iRO_Connection {
 
     /**
      * Makes a call to the API that will check if the cache needs to be refreshed
+     * @param $type
      */
     public static function check_cache($type){
 
