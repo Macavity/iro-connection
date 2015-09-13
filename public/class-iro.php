@@ -14,7 +14,7 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.5';
+    const VERSION = '1.0.6';
 
     const API_DOMAIN = 'http://api-dev.paneon.de';
 
@@ -50,13 +50,17 @@ class iRO_Connection {
         'contact_name'
     );
 
+    private $jsFiles = array(
+        'iro_js_filter' => '/iro-connection/assets/js/joblist.js'
+    );
+
     /**
      * Initialize the plugin by setting localization and loading public scripts
      * and styles.
      *
      * @since     1.0.0
      */
-    private function __construct() {
+    protected function __construct() {
 
         // Load plugin text domain
         add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -180,7 +184,7 @@ class iRO_Connection {
 
             $jobId = get_query_var('job_id');
             $iroSerial = get_option('iro_connection_serial');
-            
+
             $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
 
             $curlHandle = curl_init($curlUrl);
@@ -460,6 +464,39 @@ class iRO_Connection {
     }
 
     /**
+     * Makes a call to the API that will check if the cache needs to be refreshed
+     * @param $type
+     */
+    public static function check_cache($type){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        self::do_post_request(
+            self::API_DOMAIN.'/search/'.$iroSerial.'/check-cache/jobs/'.$type
+        );
+    }
+
+    protected static function do_post_request($url, $data = array(), $optional_headers = null,$getresponse = false) {
+        $params = array('http' => array(
+            'method' => 'GET',
+            'content' => $data
+        ));
+        if ($optional_headers !== null) {
+            $params['http']['header'] = $optional_headers;
+        }
+        $ctx = stream_context_create($params);
+        $fp = @fopen($url, 'rb', false, $ctx);
+        if (!$fp) {
+            return false;
+        }
+        if ($getresponse){
+            $response = stream_get_contents($fp);
+            return $response;
+        }
+        return true;
+    }
+
+    /**
      * Return an instance of this class.
      *
      * @since     1.0.0
@@ -635,7 +672,7 @@ class iRO_Connection {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-        wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/iroconnection.css', __FILE__ ), array(), self::VERSION );
+        //wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/iroconnection.css', __FILE__ ), array(), self::VERSION );
     }
 
     /**
@@ -644,7 +681,16 @@ class iRO_Connection {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/main.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+
+        foreach($this->jsFiles as $plugin_slug => $plugin_url){
+            wp_deregister_script( $plugin_slug );
+            wp_register_script(
+                $plugin_slug,
+                plugins_url('/iro-connection/assets/js/joblist.js')
+            );
+            wp_enqueue_script( $plugin_slug );
+        }
+
     }
 
     /**
