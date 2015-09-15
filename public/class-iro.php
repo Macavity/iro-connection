@@ -14,7 +14,7 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.6';
+    const VERSION = '1.0.7';
 
     const API_DOMAIN = 'http://api-dev.paneon.de';
 
@@ -382,6 +382,43 @@ class iRO_Connection {
         }
         catch(Exception $exception){
 
+        }
+
+        return $joblist;
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public static function getSearchJobs(){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        $joblist = array();
+
+        try{
+            /*
+             * Load Jobs from API
+             */
+            $curlUrl =  self::API_DOMAIN.'/search/'.$iroSerial.'/joblist';
+
+            $curlHandle = curl_init($curlUrl);
+            curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+            $requestData = curl_exec($curlHandle);
+
+            curl_close($curlHandle);
+
+            $jsonData = json_decode($requestData, true);
+
+            if(isset($jsonData['results']) && isset($jsonData['results']['hits'])){
+                $joblist = $jsonData['results']['hits'];
+            }
+
+        }
+        catch(Exception $exception){
+            //throw(new Exception($exception->getMessage(), $exception->getCode()));
         }
 
         return $joblist;

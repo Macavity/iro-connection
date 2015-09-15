@@ -17,13 +17,19 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-$currentDir = "/wp-content/plugins/iro-connection";
 $currentDir = plugin_dir_path(__FILE__);
 
-require_once( 'vendor/autoload.php');
+/**
+ * For future use.
+ */
+$useAlgolia = false;
+
+if($useAlgolia){
+    include_once ($currentDir. 'vendor/algolia/algoliasearch-client-php/algoliasearch.php');
+}
 
 // Include Parsedown Formatter
-require_once( 'vendor/Parsedown.php');
+require_once( $currentDir.'vendor/Parsedown.php');
 
 
 /*
