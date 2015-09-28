@@ -7,6 +7,7 @@
  * @license   GPL-2.0+
  */
 
+
 class iRO_Connection {
 
     /**
@@ -447,6 +448,14 @@ class iRO_Connection {
         $text = str_replace("&amp;", "&", $text);
 
         return $text;
+    }
+
+    public static function formatTextWithMarkdown($text){
+        $markdownParser = new Parsedown();
+
+        $text = str_replace('&quot;', '"', $text);
+
+        return $markdownParser->text($text);
     }
 
     public static function formatText($text, $formatter = IRO_FORMATTER_SIMPLE){
