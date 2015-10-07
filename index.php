@@ -17,6 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
+$currentDir = "/wp-content/plugins/iro-connection";
 $currentDir = plugin_dir_path(__FILE__);
 
 /**
@@ -43,6 +44,7 @@ define('IRO_JOB_TYPE_ARCHIVE', 2);
 
 define("IRO_FORMATTER_BASIC", 1);
 define("IRO_FORMATTER_SIMPLE", 2);
+define("IRO_FORMATTER_MARKDOWN", 3);
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
