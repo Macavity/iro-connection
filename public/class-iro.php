@@ -17,7 +17,7 @@ class iRO_Connection {
      */
     const VERSION = '1.0.8';
 
-    const API_DOMAIN = 'http://api-dev.paneon.de';
+    const API_DOMAIN = 'http://api.paneon.de';
 
     /**
      * Unique identifier
