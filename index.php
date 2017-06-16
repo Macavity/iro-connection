@@ -21,7 +21,7 @@ $currentDir = "/wp-content/plugins/iro-connection";
 $currentDir = plugin_dir_path(__FILE__);
 
 /**
- * For future use.
+ * Premium Feature
  */
 $useAlgolia = false;
 
