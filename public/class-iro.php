@@ -14,9 +14,9 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.6';
+    const VERSION = '1.0.7';
 
-    const API_DOMAIN = 'http://api-dev.paneon.de';
+    const API_DOMAIN = 'http://api.paneon.de';
 
     /**
      * Unique identifier
@@ -112,7 +112,6 @@ class iRO_Connection {
             'joblist-blocks.php'    => 'iRO Jobliste',
             'joblist.php'           => 'iRO Jobliste - Tabelle',
         );
-
     }
 
     /**
