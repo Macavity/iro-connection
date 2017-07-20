@@ -1,0 +1,61 @@
+# Copyright (C) 2015 Alexander Pape <a.pape@paneon.de>
+# This file is distributed under the same license as the iRO Connection package.
+msgid ""
+msgstr ""
+"Project-Id-Version: iRO Connection 1.0.6\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/index\n"
+"POT-Creation-Date: 2015-09-13 19:28:57+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.2\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: public/iRO_Widget.php:14
+msgid "iRO Search Widget"
+msgstr ""
+
+#: public/iRO_Widget.php:18
+msgid "Displays a search box that enables a filter for the joblist"
+msgstr ""
+
+#: public/iRO_Widget.php:53
+msgid "Title:"
+msgstr ""
+
+#: public/iro_shortcodes.php:19
+msgid "To search type and hit enter"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "iRO Connection"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.heads2hunt.de"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Plugin for displaying positions from an iRO Database"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Alexander Pape <a.pape@paneon.de>"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.paneon.de"
+msgstr ""

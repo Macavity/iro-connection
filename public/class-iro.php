@@ -7,6 +7,7 @@
  * @license   GPL-2.0+
  */
 
+
 class iRO_Connection {
 
     /**
@@ -14,7 +15,7 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.7';
+    const VERSION = '1.0.8';
 
     const API_DOMAIN = 'http://api.paneon.de';
 
@@ -386,6 +387,43 @@ class iRO_Connection {
         return $joblist;
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public static function getSearchJobs(){
+
+        $iroSerial = get_option('iro_connection_serial');
+
+        $joblist = array();
+
+        try{
+            /*
+             * Load Jobs from API
+             */
+            $curlUrl =  self::API_DOMAIN.'/search/'.$iroSerial.'/joblist';
+
+            $curlHandle = curl_init($curlUrl);
+            curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+
+            $requestData = curl_exec($curlHandle);
+
+            curl_close($curlHandle);
+
+            $jsonData = json_decode($requestData, true);
+
+            if(isset($jsonData['results']) && isset($jsonData['results']['hits'])){
+                $joblist = $jsonData['results']['hits'];
+            }
+
+        }
+        catch(Exception $exception){
+            //throw(new Exception($exception->getMessage(), $exception->getCode()));
+        }
+
+        return $joblist;
+    }
+
     public static function getJobsCount($type = 'open'){
 
         $joblistResults = self::getJobs($type);
@@ -409,6 +447,14 @@ class iRO_Connection {
         $text = str_replace("&amp;", "&", $text);
 
         return $text;
+    }
+
+    public static function formatTextWithMarkdown($text){
+        $markdownParser = new Parsedown();
+
+        $text = str_replace('&quot;', '"', $text);
+
+        return $markdownParser->text($text);
     }
 
     public static function formatText($text, $formatter = IRO_FORMATTER_SIMPLE){
@@ -464,6 +510,7 @@ class iRO_Connection {
 
     /**
      * Makes a call to the API that will check if the cache needs to be refreshed
+     * @param $type
      */
     public static function check_cache($type){
 
