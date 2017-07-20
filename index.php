@@ -8,7 +8,7 @@
  * Plugin URI:          http://www.heads2hunt.de
  * Description:         Plugin for displaying positions from an iRO Database
  * Author:              Alexander Pape <a.pape@paneon.de>
- * Version:             1.0.6
+ * Version:             1.0.9
  * Author URI:          http://www.paneon.de
 */
 
@@ -20,10 +20,17 @@ if ( ! defined( 'WPINC' ) ) {
 $currentDir = "/wp-content/plugins/iro-connection";
 $currentDir = plugin_dir_path(__FILE__);
 
-require_once( 'vendor/autoload.php');
+/**
+ * Premium Feature
+ */
+$useAlgolia = false;
+
+if($useAlgolia){
+    include_once ($currentDir. 'vendor/algolia/algoliasearch-client-php/algoliasearch.php');
+}
 
 // Include Parsedown Formatter
-require_once( 'vendor/Parsedown.php');
+require_once( $currentDir.'vendor/Parsedown.php');
 
 
 /*
@@ -37,6 +44,7 @@ define('IRO_JOB_TYPE_ARCHIVE', 2);
 
 define("IRO_FORMATTER_BASIC", 1);
 define("IRO_FORMATTER_SIMPLE", 2);
+define("IRO_FORMATTER_MARKDOWN", 3);
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
