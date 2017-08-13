@@ -8,7 +8,7 @@
  * Plugin URI:          http://www.heads2hunt.de
  * Description:         Plugin for displaying positions from an iRO Database
  * Author:              Alexander Pape <a.pape@paneon.de>
- * Version:             1.0.10
+ * Version:             1.0.11
  * Author URI:          http://www.paneon.de
 */
 
@@ -53,7 +53,7 @@ define("IRO_FORMATTER_MARKDOWN", 3);
 require 'plugin-update-checker/plugin-update-checker.php';
 
 $myUpdateChecker = PucFactory::buildUpdateChecker(
-    'http://www.paneon.de/wp-content/plugins/iro-connection/metadata.json',
+    'http://www.heads2hunt.de/wp-content/plugins/iro-connection/metadata.json',
     __FILE__
 );
 

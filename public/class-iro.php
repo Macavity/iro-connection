@@ -15,9 +15,9 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.10';
+    const VERSION = '1.0.11';
 
-    const API_DOMAIN = 'http://api.paneon.de';
+    const API_DOMAIN = 'http://api.heads2hunt.de';
 
     /**
      * Unique identifier
