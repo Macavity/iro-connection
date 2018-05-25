@@ -15,9 +15,7 @@ class iRO_Connection {
      *
      * @var     string
      */
-    const VERSION = '1.0.11';
-
-    const API_DOMAIN = 'http://api.heads2hunt.de';
+    const VERSION = '1.1.1';
 
     /**
      * Unique identifier
@@ -159,7 +157,10 @@ class iRO_Connection {
      * @return string
      */
     public static function get_api_domain(){
-        return self::API_DOMAIN;
+        $configValue = get_option('iro_api_endpoint');
+        
+        // Remove last slash and whitespace
+        return rtrim($configValue, ' /');
     }
 
     /**
@@ -172,6 +173,8 @@ class iRO_Connection {
 
     public function add_template_redirect(){
         global $wp_query, $wpdb, $wp_title;
+        
+        $apiDomain = iRO_Connection::get_api_domain();
 
         if (!session_id()) {
             session_start();
@@ -186,7 +189,7 @@ class iRO_Connection {
             $jobId = get_query_var('job_id');
             $iroSerial = get_option('iro_connection_serial');
 
-            $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
+            $curlUrl = $apiDomain.'/data/'.$iroSerial.'/job-detail/'.$jobId;
 
             $curlHandle = curl_init($curlUrl);
             curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -318,8 +321,10 @@ class iRO_Connection {
     public static function getJobDetail($jobId = 0){
 
         $iroSerial = get_option('iro_connection_serial');
-
-        $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/job-detail/'.$jobId;
+        
+        $apiDomain = iRO_Connection::get_api_domain();
+        
+        $curlUrl = $apiDomain .'/data/'.$iroSerial.'/job-detail/'.$jobId;
 
         $curlHandle = curl_init($curlUrl);
         curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -353,6 +358,7 @@ class iRO_Connection {
     public static function getJobs($type = 'open'){
 
         $iroSerial = get_option('iro_connection_serial');
+        $apiDomain = iRO_Connection::get_api_domain();
 
         $joblist = array();
 
@@ -361,10 +367,10 @@ class iRO_Connection {
              * Load Jobs from API
              */
             if($type == "archive" || $type == "archiv"){
-                $curlUrl = self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/desc/archiv';
+                $curlUrl = $apiDomain .'/data/'.$iroSerial.'/jobs/desc/archiv';
             }
             else {
-                $curlUrl =  self::API_DOMAIN.'/data/'.$iroSerial.'/jobs/desc';
+                $curlUrl =  $apiDomain .'/data/'.$iroSerial.'/jobs/desc';
             }
 
             $curlHandle = curl_init($curlUrl);
@@ -394,7 +400,9 @@ class iRO_Connection {
      */
     public static function getSearchJobs(){
 
-        $iroSerial = get_option('iro_connection_serial');
+        $iroSerial = get_option('iro_connection_serial');            
+        $apiDomain = iRO_Connection::get_api_domain();
+
 
         $joblist = array();
 
@@ -402,7 +410,7 @@ class iRO_Connection {
             /*
              * Load Jobs from API
              */
-            $curlUrl =  self::API_DOMAIN.'/search/'.$iroSerial.'/joblist';
+            $curlUrl =  $apiDomain.'/search/'.$iroSerial.'/joblist';
 
             $curlHandle = curl_init($curlUrl);
             curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
@@ -516,9 +524,10 @@ class iRO_Connection {
     public static function check_cache($type){
 
         $iroSerial = get_option('iro_connection_serial');
+        $apiDomain = iRO_Connection::get_api_domain();
 
         self::do_post_request(
-            self::API_DOMAIN.'/search/'.$iroSerial.'/check-cache/jobs/'.$type
+            $apiDomain.'/search/'.$iroSerial.'/check-cache/jobs/'.$type
         );
     }
 
