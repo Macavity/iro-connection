@@ -214,8 +214,8 @@ class iRO_Connection_Admin {
                 'label' => 'iRO Seriennummer'
             ),
             array(
-                'id' => 'iro_api_token',
-                'label' => 'API Security Token'
+                'id' => 'iro_api_endpoint',
+                'label' => 'API Endpoint'
             ),
         );
 

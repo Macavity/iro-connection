@@ -10,7 +10,7 @@ function iRO_Connection_shortcodeJobsCount($atts, $content = ""){
             $atts )
     );
 
-    return '<span class="jsIroJobCount">'.iRO_Connection::getJobsCount($type).'</span>';
+    return '<span class="jsIroJobCount">'.iRO_Connection::getJobsCount('open').'</span>';
 
 }
 
