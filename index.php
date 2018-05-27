@@ -8,7 +8,7 @@
  * Plugin URI:          http://www.heads2hunt.de
  * Description:         Plugin for displaying positions from an iRO Database
  * Author:              Alexander Pape <a.pape@paneon.de>
- * Version:             1.0.11
+ * Version:             1.2.1
  * Author URI:          http://www.paneon.de
  */
 
@@ -26,11 +26,11 @@ $currentDir = plugin_dir_path(__FILE__);
 $useAlgolia = false;
 
 if ($useAlgolia) {
-    include_once('./vendor/algolia/algoliasearch-client-php/algoliasearch.php');
+    include_once('vendor/algolia/algoliasearch-client-php/algoliasearch.php');
 }
 
 // Include Parsedown Formatter
-require_once('./vendor/Parsedown.php');
+require_once('vendor/Parsedown.php');
 
 
 /*
@@ -49,7 +49,7 @@ define("IRO_FORMATTER_MARKDOWN", 3);
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
-require './plugin-update-checker/plugin-update-checker.php';
+require 'plugin-update-checker/plugin-update-checker.php';
 
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
     'https://github.com/Macavity/iro-connection/',
@@ -78,13 +78,13 @@ add_action('plugins_loaded', array('iRO_Connection', 'get_instance'));
  * Shortcodes
  *----------------------------------------------------------------------------*/
 
-include_once('public/iro_shortcodes.php');
+require_once('public/iro_shortcodes.php');
 
 /*----------------------------------------------------------------------------*
  * Filter Box Widget
  *----------------------------------------------------------------------------*/
 
-include_once('public/iRO_Widget.php');
+require_once('public/iRO_Widget.php');
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
@@ -92,7 +92,7 @@ include_once('public/iRO_Widget.php');
 
 if (is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX)) {
 
-    require_once( './admin/class-iro-admin.php');
+    require_once( 'admin/class-iro-admin.php');
     add_action('plugins_loaded', array('iRO_Connection_Admin', 'get_instance'));
 
 }
